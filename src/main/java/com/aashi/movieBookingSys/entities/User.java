@@ -1,6 +1,7 @@
 package com.aashi.movieBookingSys.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -30,19 +31,55 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime dateOfBirth;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @JsonBackReference
+    private Set<Booking> bookings;
+
     //user can have multiple ph number;
 
     //to make a new table : @ElementCollection
     //to set the collection table name : @CollectionTable
-    @ElementCollection //this field is like a collection : multiple phn numbers
+    @ElementCollection(fetch = FetchType.EAGER) //this field is like a collection : multiple phn numbers
     @CollectionTable(name="customer_contact_number",
     joinColumns = @JoinColumn(name = "customer_id")
     )
-    @Column(name = "mobile_number", nullable = false)
+    @Column(name = "mobile_number")
     private Set<Integer> phoneNumbers;
+
+    @ManyToOne
+    @JoinColumn(name = "user_type_id", nullable = false)
+    private UserType userType;
+
+    @ManyToOne
+    @JoinColumn(name = "language_id")
+    private Language language;
 
     public int getUserId() {
         return userId;
+    }
+
+    public Set<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(Set<Booking> bookings) {
+        this.bookings = bookings;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     public void setUserId(int userId) {

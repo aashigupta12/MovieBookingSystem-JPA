@@ -1,5 +1,6 @@
 package com.aashi.movieBookingSys.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,18 +19,17 @@ public class Theatre {
     private float ticketPrice = 150.00f;
 
 
-
-
     //establishing a relationship between city and theatre
     //we are in a theatre & we are looking for a city
     //many-to-one relationship
 
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false) //@Column is used for normal column
+    @JsonBackReference
     private City city;
 
-    @ManyToMany(mappedBy = "theatres")
-    private List<Movie> movies;
+//    @ManyToMany(mappedBy = "theatres")
+//    private List<Movie> movies;
 
 
     public City getCity() {
@@ -38,14 +38,6 @@ public class Theatre {
 
     public void setCity(City city) {
         this.city = city;
-    }
-
-    public List<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(List<Movie> movies) {
-        this.movies = movies;
     }
 
     public int getTheatreId() {

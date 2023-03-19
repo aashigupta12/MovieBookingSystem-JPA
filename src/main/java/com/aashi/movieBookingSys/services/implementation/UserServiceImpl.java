@@ -1,12 +1,12 @@
 package com.aashi.movieBookingSys.services.implementation;
 
-import com.aashi.movieBookingSys.Exceptions.MovieDetailsNotFoundException;
 import com.aashi.movieBookingSys.Exceptions.UserDetailsNotFoundException;
 import com.aashi.movieBookingSys.Exceptions.UserNameAlreadyExistException;
 import com.aashi.movieBookingSys.Exceptions.UserTypeDetailsNotFoundException;
 import com.aashi.movieBookingSys.dao.UserDao;
 import com.aashi.movieBookingSys.entities.User;
 import com.aashi.movieBookingSys.services.UserService;
+import com.aashi.movieBookingSys.services.UserTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +18,16 @@ public class UserServiceImpl implements UserService {
      */
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private UserTypeService userTypeService;
     @Override
-    public User acceptUserDetails(User user) throws UserNameAlreadyExistException, UserTypeDetailsNotFoundException {
+    public User acceptUserDetails(User user)
+            throws UserNameAlreadyExistException, UserTypeDetailsNotFoundException {
+        if (userDao.findByUsername(user.getUsername()).isPresent()) {
+            throw new UserNameAlreadyExistException("This username is already taken.");
+        }
+        userTypeService.getUserTypeDetails(user.getUserType().getUserTypeId());
         return userDao.save(user);
     }
 
@@ -33,8 +41,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserDetailsByName(String username) throws UserDetailsNotFoundException {
-        System.out.println("Aashi is dumb");
+    public User getUserDetailsByUsername(String username) throws UserDetailsNotFoundException {
+//        System.out.println("Aashi is smart");
         //System.out.println(username);
         return userDao.findByUsername(username)
                 .orElseThrow(() -> new UserDetailsNotFoundException("Customer not found with username: " + username));
@@ -48,6 +56,8 @@ public class UserServiceImpl implements UserService {
         if (userDao.findByUsername(user.getUsername()).isPresent()) {
             throw new UserNameAlreadyExistException("This username is already taken.");
         }
+        userTypeService.getUserTypeDetails(user.getUserType().getUserTypeId());
+
 
         if (isNotNullOrZero(user.getFirstName())) {
             savedUser.setFirstName(user.getFirstName());

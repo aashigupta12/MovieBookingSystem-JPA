@@ -1,101 +1,105 @@
 package com.aashi.movieBookingSys;
 
-import com.aashi.movieBookingSys.Exceptions.MovieDetailsNotFoundException;
-import com.aashi.movieBookingSys.Exceptions.UserDetailsNotFoundException;
-import com.aashi.movieBookingSys.Exceptions.UserNameAlreadyExistException;
-import com.aashi.movieBookingSys.Exceptions.UserTypeDetailsNotFoundException;
-import com.aashi.movieBookingSys.dao.*;
-import com.aashi.movieBookingSys.entities.*;
-import com.aashi.movieBookingSys.services.MovieService;
-import com.aashi.movieBookingSys.services.UserService;
+import com.aashi.movieBookingSys.services.InitService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.List;
 
 @SpringBootApplication
 public class MovieBookingSysApplication {
 
+	/**
+	 * we need the logger object
+	 * */
+	private static final Logger LOGGER = LoggerFactory.getLogger(MovieBookingSysApplication.class);
+
 	public static void main(String[] args)  {
 		ApplicationContext ctx = SpringApplication.run(MovieBookingSysApplication.class, args);
 
+		LOGGER.debug("Writing for debug");
+		LOGGER.info("Writing for info");
+		LOGGER.warn("Writing for warn");
+		LOGGER.error("Writing for error");
+		//init service impl testing
 		/**
 		 * SERVICE LAYER
 		 */
-		MovieService movieService = ctx.getBean(MovieService.class);
-		StatusDao statusDao = ctx.getBean(StatusDao.class);
-
-		Status status = new Status();
-		status.setStatusName("RELEASED!!");
-
-		//SAVE THE STTAUS
-		statusDao.save(status);
-
-		Movie movie = new Movie();
-		movie.setMovieName("Conjuring");
-		movie.setMovieDescription("Horror Movie");
-		movie.setTrailerUrl("trailer_url");
-		movie.setDuration(120);
-		movie.setReleaseDate(LocalDateTime.of(2023,3,16,6,6,6));
-		movie.setCoverPhotoUrl("cover-photo");
-		movie.setStatus(status);
-
-		Movie store = movieService.acceptMovieDetails(movie);
-		try{
-			Movie st = movieService.getMovieDetails(store.getMovieId());
-			System.out.println("st -->>>>>>>>>" + st);
-		} catch (MovieDetailsNotFoundException e){
-			System.out.println("not found");
-			e.printStackTrace();
-		}
-
-		UserService userService = ctx.getBean(UserService.class);
-		User user = new User();
-		user.setFirstName("Aashi");
-		user.setLastName("Gupta");
-		user.setDateOfBirth(LocalDateTime.of(2000,9,12,2,2,2));
-		user.setUsername("aashi12");
-		user.setPassword("#aashi12");
-
-		User user1 = new User();
-		user1.setFirstName("Tapan");
-		user1.setLastName("Kumar");
-		user1.setDateOfBirth(LocalDateTime.of(2000,3,12,2,2,2));
-		user1.setUsername("tapan");
-		user1.setPassword("#sigmarek");
-
-        try {
-			System.out.println("hi pehle");
-			User store2 = userService.acceptUserDetails(user);
-			userService.acceptUserDetails(user1);
-			System.out.println(userService.getUserDetails(store2.getUserId()));
-
-			System.out.println("hi2");
-		} catch(Exception e) {
-			System.out.println("Exception is " + e);
-		}
-
-		try{
-			User store3 = userService.getUserDetailsByName("aashi12");
-			System.out.println(store3);
-		} catch(UserDetailsNotFoundException u){
-			System.out.println("hi bye");
-		}
-
-		try{
-			user1.setUsername("sigmarek");
-			User store4 = userService.updateUserDetails(2,user1);
-		} catch (UserNameAlreadyExistException e) {
-			e.printStackTrace();
-		} catch (UserTypeDetailsNotFoundException e) {
-			e.printStackTrace();
-		} catch (UserDetailsNotFoundException e) {
-			e.printStackTrace();
-		}
+//		MovieService movieService = ctx.getBean(MovieService.class);
+//		StatusDao statusDao = ctx.getBean(StatusDao.class);
+//
+//		Status status = new Status();
+//		status.setStatusName("RELEASED!!");
+//
+//		//SAVE THE STTAUS
+//		statusDao.save(status);
+//
+//		Movie movie = new Movie();
+//		movie.setMovieName("Conjuring");
+//		movie.setMovieDescription("Horror Movie");
+//		movie.setTrailerUrl("trailer_url");
+//		movie.setDuration(120);
+//		movie.setReleaseDate(LocalDateTime.of(2023,3,16,6,6,6));
+//		movie.setCoverPhotoUrl("cover-photo");
+//		movie.setStatus(status);
+//
+//		Movie store = movieService.acceptMovieDetails(movie);
+//		try{
+//			Movie st = movieService.getMovieDetails(store.getMovieId());
+//			System.out.println("st -->>>>>>>>>" + st);
+//		} catch (MovieDetailsNotFoundException e){
+//			System.out.println("not found");
+//			e.printStackTrace();
+//		}
+//
+//		UserService userService = ctx.getBean(UserService.class);
+//		User user = new User();
+//		user.setFirstName("Aashi");
+//		user.setLastName("Gupta");
+//		user.setDateOfBirth(LocalDateTime.of(2000,9,12,2,2,2));
+//		user.setUsername("aashi12");
+//		user.setPassword("#aashi12");
+//
+//		User user1 = new User();
+//		user1.setFirstName("Tapan");
+//		user1.setLastName("Kumar");
+//		user1.setDateOfBirth(LocalDateTime.of(2000,3,12,2,2,2));
+//		user1.setUsername("tapan");
+//		user1.setPassword("#sigmarek");
+//
+//        try {
+//			System.out.println("hi pehle");
+//			User store2 = userService.acceptUserDetails(user);
+//			userService.acceptUserDetails(user1);
+//			System.out.println(userService.getUserDetails(store2.getUserId()));
+//
+//			System.out.println("hi2");
+//		} catch(Exception e) {
+//			System.out.println("Exception is " + e);
+//		}
+//
+//		try{
+//			User store3 = userService.getUserDetailsByUsername("aashi12");
+//			System.out.println(store3);
+//		} catch(UserDetailsNotFoundException u){
+//			System.out.println("hi bye");
+//		}
+//
+//		try{
+//			user1.setUsername("sigmarek");
+//			User store4 = userService.updateUserDetails(2,user1);
+//		} catch (UserNameAlreadyExistException e) {
+//			e.printStackTrace();
+//		} catch (UserTypeDetailsNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (UserDetailsNotFoundException e) {
+//			e.printStackTrace();
+//		}
 
 
 		/**
@@ -204,6 +208,16 @@ public class MovieBookingSysApplication {
 //		Car savedCar = carDao.save(car);
 //		System.out.println(savedCar);
 
-//		System.out.println("hello spring boot!");
+		System.out.println("hello spring boot!");
+	}
+
+	//this is a way to execute something in the very beginning
+	//when application is starting up
+	@Bean
+	CommandLineRunner init(InitService initService){
+		return args -> {
+			System.out.println("this will be executed as soon as the application is started");
+			initService.init();
+		};
 	}
 }

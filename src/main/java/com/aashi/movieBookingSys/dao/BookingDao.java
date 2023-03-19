@@ -1,4 +1,7 @@
 package com.aashi.movieBookingSys.dao;
 
-public interface BookingDao {
+import com.aashi.movieBookingSys.entities.Booking;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface BookingDao extends JpaRepository<Booking, Integer> {
 }

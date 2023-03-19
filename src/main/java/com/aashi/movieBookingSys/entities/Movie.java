@@ -28,11 +28,11 @@ public class Movie {
     @JoinColumn(name = "status_id", nullable = false)
     private Status status;
 
-    @JoinTable(name= "movie_theatre",
-            joinColumns = @JoinColumn(name="movie_id"), //same entity
-            inverseJoinColumns = @JoinColumn(name= "theatre_id")) //diff entity
-    @ManyToMany
-    private List<Theatre> theatres;
+//    @JoinTable(name= "movie_theatre",
+//            joinColumns = @JoinColumn(name="movie_id"), //same entity
+//            inverseJoinColumns = @JoinColumn(name= "theatre_id")) //diff entity
+//    @ManyToMany
+//    private List<Theatre> theatres;
 
     //parameterized constructor
 //    public Movie(int movieId, String movieName, String movieDescription, LocalDateTime releaseDate, int duration, String coverPhotoUrl, String trailerUrl, Status status, List<Theatre> theatres) {
@@ -54,13 +54,13 @@ public class Movie {
         this.status = status;
     }
 
-    public List<Theatre> getTheatres() {
-        return theatres;
-    }
-
-    public void setTheatres(List<Theatre> theatres) {
-        this.theatres = theatres;
-    }
+//    public List<Theatre> getTheatres() {
+//        return theatres;
+//    }
+//
+//    public void setTheatres(List<Theatre> theatres) {
+//        this.theatres = theatres;
+//    }
 
     public int getMovieId() {
         return movieId;

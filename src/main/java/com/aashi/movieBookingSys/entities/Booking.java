@@ -1,9 +1,7 @@
 package com.aashi.movieBookingSys.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +16,33 @@ public class Booking {
 
     @Column(nullable = false)
     private int noOfSeats;
+
+    @ManyToOne //many bookings can have one user
+    @JsonManagedReference
+    @JoinColumn(name = " user_id" , nullable = false)
+    private  User user;
+
+    @ManyToOne
+    @JoinColumn(name = "movie_theatre_id", nullable = false)
+    private MovieTheatre movieTheatre;
+
+    public MovieTheatre getMovieTheatre() {
+        return movieTheatre;
+    }
+
+    public void setMovieTheatre(MovieTheatre movieTheatre) {
+        this.movieTheatre = movieTheatre;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
 
     public int getBookingId() {
         return bookingId;

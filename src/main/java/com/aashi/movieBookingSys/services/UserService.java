@@ -25,7 +25,7 @@ public interface UserService {
     /**
      * Fetch user by its name
      * */
-    public User getUserDetailsByName(String username)
+    public User getUserDetailsByUsername(String username)
             throws UserDetailsNotFoundException;
 
     /**
